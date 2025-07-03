@@ -14,7 +14,7 @@ if not API_TOKEN:
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
-# Клавиатура с кнопками FAQ и Контакты
+
 keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text='FAQ')],
@@ -33,18 +33,18 @@ faq_data = {
 
 }
 
-@dp.message(Command(commands=["start", "help"]))
+@dp.business_message(Command(commands=["start", "help"]))
 async def send_welcome(message: Message):
     await message.answer("Привет! Я бот AI Tech. Выберите интересующую вас опцию:", reply_markup=keyboard)
 
-@dp.message(lambda msg: msg.text and msg.text.lower() == 'faq')
+@dp.business_message(lambda msg: msg.text and msg.text.lower() == 'faq')
 async def faq_handler(message: Message):
     full_faq_text = ""
     for question, answer in faq_data.items():
         full_faq_text += f"❓ {question}\n\n{answer}\n\n"
     await message.answer(full_faq_text.strip(), parse_mode='HTML')
 
-@dp.message(lambda msg: msg.text == 'Контакты')
+@dp.business_message(lambda msg: msg.text == 'Контакты')
 async def contacts_handler(message: Message):
     await message.answer("Связаться с нами можно по ссылке: https://t.me/ai_tech_llc")
 
